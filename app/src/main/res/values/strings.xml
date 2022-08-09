@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Show Places</string>
+    <string name="tab_text_1">Map</string>
+    <string name="tab_text_2">List</string>
+    <string name="tab_text_3">Settings</string>
+    <string name="drop_a_pin">Drop a pin</string>
+</resources>
