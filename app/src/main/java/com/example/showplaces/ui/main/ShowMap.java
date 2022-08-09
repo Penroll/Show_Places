@@ -29,7 +29,6 @@ import com.example.showplaces.Model.ShowPlace;
 import com.example.showplaces.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -132,11 +131,11 @@ public class ShowMap extends Fragment {
                 ShowPlace place = markerMap.get(marker.getId());
 
                 if(place != null) {
-                    System.out.println("Joseph Mama Gotem");
+                    System.out.println("Joseph Mama Got 'em");
                     //TODO: Bring up the info lmao
                 }
                 else {
-                    System.out.println("FUCK THERE ISNT A MATCH FOR THE CLICK");
+                    System.out.println("FUCK THERE ISN'T A MATCH FOR THE CLICK");
                 }
 
             });
