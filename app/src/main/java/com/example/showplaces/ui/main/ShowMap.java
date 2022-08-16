@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -27,11 +28,13 @@ import android.view.ViewGroup;
 
 import com.example.showplaces.Model.ShowPlace;
 import com.example.showplaces.R;
+import com.example.showplaces.databinding.ShowMapBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,6 +62,8 @@ public class ShowMap extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         if( requireContext().getApplicationContext().checkSelfPermission( Manifest.permission.READ_CONTACTS ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.READ_CONTACTS},1);
         }
@@ -72,6 +77,10 @@ public class ShowMap extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         pageViewModel.setIndex(index);
+
+
+
+
     }
 
     @SuppressLint("PotentialBehaviorOverride")
@@ -117,6 +126,8 @@ public class ShowMap extends Fragment {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 10));
             }
 
+
+
             for(int i = 0; i < pulledPlaces.size(); i++) {
                 LatLng latLng = new LatLng(pulledPlaces.get(i).lat, pulledPlaces.get(i).lon);
                 Marker marker = googleMap.addMarker(new MarkerOptions().position(latLng).title(pulledPlaces.get(i).name).snippet(pulledPlaces.get(i).address));
@@ -129,18 +140,29 @@ public class ShowMap extends Fragment {
                 ShowPlace place = markerMap.get(marker.getId());
 
                 if(place != null) {
-                    System.out.println("Joseph Mama Got 'em");
                     //TODO: Bring up the info lmao
                 }
                 else {
-                    System.out.println("FUCK THERE ISN'T A MATCH FOR THE CLICK");
                 }
 
             });
+
+            FloatingActionButton fab = requireActivity().findViewById(R.id.fab);
+            fab.setOnClickListener(view1 -> {
+                assert currentLocation != null;
+                ShowPlace placeToAdd = new ShowPlace("Test Location", currentLocation.getLatitude(), currentLocation.getLongitude(), "ShowPlace");
+                Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(placeToAdd.lat, placeToAdd.lon)).title(placeToAdd.name).snippet(placeToAdd.address));
+                assert marker != null;
+                markerMap.put(marker.getId(), placeToAdd);
+            });
+
         });
 
         //Do Shite
         // Return view
+        Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+
         return view;
     }
 
