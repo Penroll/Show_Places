@@ -4,4 +4,9 @@
     <string name="tab_text_2">List</string>
     <string name="tab_text_3">Settings</string>
     <string name="drop_a_pin">Drop a pin</string>
+    <string name="listText">Contacts</string>
+    <string name="listShareButtonText">Share</string>
+    <string name="listFilterButtonText">Filter</string>
+    <string name="list_showplace_name">Name</string>
+    <string name="list_showplace_label">Label</string>
 </resources>

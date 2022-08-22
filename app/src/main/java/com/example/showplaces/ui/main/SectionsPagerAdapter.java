@@ -35,6 +35,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return ShowMap.newInstance(position + 1);
             case 1:
+
             case 2:
                 return PlaceholderFragment.newInstance(position + 1);
             default:

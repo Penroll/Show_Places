@@ -18,6 +18,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.provider.ContactsContract;
@@ -26,9 +28,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.showplaces.Model.ShowContact;
+import com.example.showplaces.Model.ShowItem;
 import com.example.showplaces.Model.ShowPlace;
 import com.example.showplaces.R;
-import com.example.showplaces.databinding.ShowMapBinding;
+import com.example.showplaces.util.ContactsAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -45,8 +49,8 @@ import java.util.Objects;
 public class ShowMap extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private final ArrayList<ShowPlace> pulledPlaces = new ArrayList<>();
-    private final HashMap<String, ShowPlace> markerMap = new HashMap<>();
+    private final ArrayList<ShowItem> pulledPlaces = new ArrayList<>();
+    private final HashMap<String, ShowItem> markerMap = new HashMap<>();
 
     private LocationManager locationManager;
 
@@ -119,7 +123,7 @@ public class ShowMap extends Fragment {
             Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             if(currentLocation == null) {
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pulledPlaces.get(0).lat, pulledPlaces.get(0).lon), 10));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pulledPlaces.get(0).coordinates, 10));
                 System.out.println("Current location is null");
             }
             else {
@@ -129,7 +133,7 @@ public class ShowMap extends Fragment {
 
 
             for(int i = 0; i < pulledPlaces.size(); i++) {
-                LatLng latLng = new LatLng(pulledPlaces.get(i).lat, pulledPlaces.get(i).lon);
+                LatLng latLng = pulledPlaces.get(i).coordinates;
                 Marker marker = googleMap.addMarker(new MarkerOptions().position(latLng).title(pulledPlaces.get(i).name).snippet(pulledPlaces.get(i).address));
                 assert marker != null;
                 String id = marker.getId();
@@ -137,21 +141,18 @@ public class ShowMap extends Fragment {
             }
 
             googleMap.setOnInfoWindowClickListener(marker -> {
-                ShowPlace place = markerMap.get(marker.getId());
+                ShowPlace place = (ShowPlace) markerMap.get(marker.getId());
 
-                if(place != null) {
-                    //TODO: Bring up the info lmao
-                }
-                else {
-                }
+                //TODO: Bring up the info lmao
 
             });
 
             FloatingActionButton fab = requireActivity().findViewById(R.id.fab);
             fab.setOnClickListener(view1 -> {
                 assert currentLocation != null;
-                ShowPlace placeToAdd = new ShowPlace("Test Location", currentLocation.getLatitude(), currentLocation.getLongitude(), "ShowPlace");
-                Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(placeToAdd.lat, placeToAdd.lon)).title(placeToAdd.name).snippet(placeToAdd.address));
+                ShowPlace placeToAdd = new ShowPlace("Test Location", "Home", "ShowPlace");
+                placeToAdd.setCoordinates(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                Marker marker = googleMap.addMarker(new MarkerOptions().position(placeToAdd.coordinates).title(placeToAdd.name).snippet(placeToAdd.address));
                 assert marker != null;
                 markerMap.put(marker.getId(), placeToAdd);
             });
@@ -160,8 +161,12 @@ public class ShowMap extends Fragment {
 
         //Do Shite
         // Return view
-        Location currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
+//        RecyclerView recyclerView = (RecyclerView) requireActivity().findViewById(R.id.contacts_recycler);
+//        ContactsAdapter adapter = new ContactsAdapter(pulledPlaces);
+//
+//        recyclerView.setAdapter(adapter);
+//
+//        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         return view;
     }
@@ -270,7 +275,7 @@ public class ShowMap extends Fragment {
 
                 if(address != null) {
 
-                    ShowPlace place = new ShowPlace(address, name);
+                    ShowContact place = new ShowContact(address, "Home",name);
                     place.address = address;
                     System.out.println("Name added: " + name + ", Address Added: " + address);
                     address = null;
@@ -284,7 +289,7 @@ public class ShowMap extends Fragment {
                 sb.append("\n........................................");
             }
             System.out.println("Number of locations: " + pulledPlaces.size());
-            for(ShowPlace place : pulledPlaces) {
+            for(ShowItem place : pulledPlaces) {
                 geocodeAddress(place);
             }
         }
@@ -294,7 +299,7 @@ public class ShowMap extends Fragment {
 
     }
 
-    public void geocodeAddress(ShowPlace address) {
+    public void geocodeAddress(ShowItem address) {
 
 
         Geocoder geocoder = new Geocoder(this.requireContext());
@@ -315,8 +320,7 @@ public class ShowMap extends Fragment {
 
         if(location != null) {
             System.out.println(location.getLatitude() + "," + location.getLongitude());
-            address.lat = location.getLatitude();
-            address.lon = location.getLongitude();
+            address.setCoordinates(new LatLng(location.getLatitude(), location.getLongitude()));
         }
     }
 }
