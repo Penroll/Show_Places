@@ -13,26 +13,21 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.showplaces.Model.ShowContact;
 import com.example.showplaces.Model.ShowItem;
 import com.example.showplaces.Model.ShowPlace;
 import com.example.showplaces.R;
-import com.example.showplaces.util.ContactsAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -49,7 +44,7 @@ import java.util.Objects;
 public class ShowMap extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private final ArrayList<ShowItem> pulledPlaces = new ArrayList<>();
+    static final ArrayList<ShowItem> pulledPlaces = new ArrayList<>();
     private final HashMap<String, ShowItem> markerMap = new HashMap<>();
 
     private LocationManager locationManager;
@@ -158,15 +153,6 @@ public class ShowMap extends Fragment {
             });
 
         });
-
-        //Do Shite
-        // Return view
-//        RecyclerView recyclerView = (RecyclerView) requireActivity().findViewById(R.id.contacts_recycler);
-//        ContactsAdapter adapter = new ContactsAdapter(pulledPlaces);
-//
-//        recyclerView.setAdapter(adapter);
-//
-//        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         return view;
     }

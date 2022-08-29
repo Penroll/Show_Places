@@ -9,4 +9,14 @@
     <string name="listFilterButtonText">Filter</string>
     <string name="list_showplace_name">Name</string>
     <string name="list_showplace_label">Label</string>
+    <string name="map_type">Map Type</string>
+    <string name="list_sort_order">List Sort Order</string>
+    <string name="coordinate_format">Coordinate Format</string>
+    <string name="preferred_maps_app">Preferred Maps App</string>
+    <string name="map_pin_color">Map Pin Color</string>
+    <string name="reload_contacts">Reload Contacts</string>
+    <string name="view_tutorial">View Tutorial</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="debug_log">Debug Log</string>
+    <string name="version_build_number">Version 1.0.0 Build 1</string>
 </resources>

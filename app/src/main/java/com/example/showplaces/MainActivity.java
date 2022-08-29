@@ -1,17 +1,34 @@
 package com.example.showplaces;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.MediaStore;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.showplaces.Model.ShowContact;
+import com.example.showplaces.Model.ShowItem;
 import com.example.showplaces.databinding.ActivityMainBinding;
 import com.example.showplaces.ui.main.SectionsPagerAdapter;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.tabs.TabLayout;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         1);
             }
         }
+        //TODO: Read the contacts into a class here. Then, access pulledPlaces via requireActivity()
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = binding.viewPager;
@@ -47,4 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 }

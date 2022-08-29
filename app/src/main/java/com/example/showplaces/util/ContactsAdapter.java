@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.showplaces.Model.ShowItem;
@@ -23,8 +22,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
+
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.list_tab, parent, false);
+        View contactView = inflater.inflate(R.layout.list_showplace_display, parent, false);
 
         // Return a new holder instance
         return new ViewHolder(contactView);
@@ -37,7 +37,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         TextView textView = holder.nameTextView;
         textView.setText(item.name);
         TextView textView1 = holder.labelTextView;
-        textView1.setText(item.label);
+        textView1.setText("| " + item.label);
     }
 
     @Override
@@ -45,15 +45,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         return mContacts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
         public TextView labelTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            nameTextView = (TextView) itemView.findViewById(R.id.list_item_name);
-            labelTextView = (TextView) itemView.findViewById(R.id.list_item_label);
+            nameTextView = itemView.findViewById(R.id.list_item_name);
+            labelTextView = itemView.findViewById(R.id.list_item_label);
         }
     }
 
