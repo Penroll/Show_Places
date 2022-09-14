@@ -1,36 +1,46 @@
 package com.example.showplaces;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.location.Address;
-import android.location.Geocoder;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.MediaStore;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.showplaces.Model.ShowContact;
 import com.example.showplaces.Model.ShowItem;
 import com.example.showplaces.databinding.ActivityMainBinding;
 import com.example.showplaces.ui.main.SectionsPagerAdapter;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+
+    //Pulled places
+    public static final ArrayList<ShowItem> pulledPlaces = new ArrayList<>();
+
+    //MarkerMap
+    public static final HashMap<String, ShowItem> markerMap = new HashMap<>();
+
+    //MapType
+    public static int mapType = GoogleMap.MAP_TYPE_NORMAL;
+
+    //List Sort Order
+    public static int sortOrder = 0;
+
+    //Preferred Maps App
+    public static int preferredMapsApp = 0;
+
+    //Map Pin Color (Hex)
+    public static String pinColor = "#FFFFFF";
+
+    //Filters
+    public static final ArrayList<String> filters = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

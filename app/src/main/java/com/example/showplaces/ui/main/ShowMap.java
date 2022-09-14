@@ -1,5 +1,7 @@
 package com.example.showplaces.ui.main;
 
+import static com.example.showplaces.MainActivity.pulledPlaces;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -24,11 +26,13 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.showplaces.MainActivity;
 import com.example.showplaces.Model.ShowContact;
 import com.example.showplaces.Model.ShowItem;
 import com.example.showplaces.Model.ShowPlace;
 import com.example.showplaces.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -37,15 +41,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class ShowMap extends Fragment {
 
+    public static GoogleMap mMap;
+
     private static final String ARG_SECTION_NUMBER = "section_number";
-    static final ArrayList<ShowItem> pulledPlaces = new ArrayList<>();
-    private final HashMap<String, ShowItem> markerMap = new HashMap<>();
 
     private LocationManager locationManager;
 
@@ -97,9 +100,8 @@ public class ShowMap extends Fragment {
         assert supportMapFragment != null;
 
 
-
-
         supportMapFragment.getMapAsync(googleMap -> {
+            mMap = googleMap;
             if (ActivityCompat.checkSelfPermission(requireActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 int permissionCheck = ContextCompat.checkSelfPermission(requireContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION);
@@ -109,6 +111,7 @@ public class ShowMap extends Fragment {
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             1);
                 }
+
 
                 return;
             }
@@ -125,31 +128,33 @@ public class ShowMap extends Fragment {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 10));
             }
 
-
-
             for(int i = 0; i < pulledPlaces.size(); i++) {
                 LatLng latLng = pulledPlaces.get(i).coordinates;
-                Marker marker = googleMap.addMarker(new MarkerOptions().position(latLng).title(pulledPlaces.get(i).name).snippet(pulledPlaces.get(i).address));
-                assert marker != null;
-                String id = marker.getId();
-                markerMap.put(id, pulledPlaces.get(i));
+                if(latLng != null) {
+                    System.out.println(pulledPlaces.get(i).name);
+                    System.out.println(pulledPlaces.get(i).address);
+                    Marker marker = googleMap.addMarker(new MarkerOptions().position(latLng).title(pulledPlaces.get(i).name).snippet(pulledPlaces.get(i).address));
+                    assert marker != null;
+                    String id = marker.getId();
+                    MainActivity.markerMap.put(id, pulledPlaces.get(i));
+                }
             }
 
             googleMap.setOnInfoWindowClickListener(marker -> {
-                ShowPlace place = (ShowPlace) markerMap.get(marker.getId());
+                ShowPlace place = (ShowPlace) MainActivity.markerMap.get(marker.getId());
 
                 //TODO: Bring up the info lmao
 
             });
 
-            FloatingActionButton fab = requireActivity().findViewById(R.id.fab);
+            FloatingActionButton fab = requireActivity().findViewById(R.id.addNew);
             fab.setOnClickListener(view1 -> {
                 assert currentLocation != null;
                 ShowPlace placeToAdd = new ShowPlace("Test Location", "Home", "ShowPlace");
                 placeToAdd.setCoordinates(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
                 Marker marker = googleMap.addMarker(new MarkerOptions().position(placeToAdd.coordinates).title(placeToAdd.name).snippet(placeToAdd.address));
                 assert marker != null;
-                markerMap.put(marker.getId(), placeToAdd);
+               MainActivity.markerMap.put(marker.getId(), placeToAdd);
             });
 
         });

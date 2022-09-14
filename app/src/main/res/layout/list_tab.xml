@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#676767">
 
     <LinearLayout
         android:layout_width="400dp"
@@ -33,7 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/listText" />
+            android:text="@string/listText"
+            android:textColor="#D6D6D6" />
 
         <Space
             android:layout_width="wrap_content"
@@ -55,13 +57,14 @@
         android:layout_height="674dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="56dp"
+        android:background="#4A4A4A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/contacts_recycler"

@@ -1,7 +1,5 @@
 package com.example.showplaces.ui.main;
 
-import static com.example.showplaces.ui.main.ShowMap.pulledPlaces;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.showplaces.MainActivity;
 import com.example.showplaces.R;
-import com.example.showplaces.util.ContactsAdapter;
+import com.example.showplaces.util.adapters.ContactsAdapter;
 
 public class ShowList extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -54,10 +53,10 @@ public class ShowList extends Fragment {
 
 
         TextView centerText = view.findViewById(R.id.textView3);
-        centerText.setText("Contacts: " + pulledPlaces.size());
+        centerText.setText("Contacts: " + MainActivity.pulledPlaces.size());
 
         RecyclerView recyclerView = view.findViewById(R.id.contacts_recycler);
-        ContactsAdapter adapter = new ContactsAdapter(pulledPlaces);
+        ContactsAdapter adapter = new ContactsAdapter(MainActivity.pulledPlaces);
 
         recyclerView.setAdapter(adapter);
 

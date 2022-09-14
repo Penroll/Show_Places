@@ -1,4 +1,4 @@
-package com.example.showplaces.util;
+package com.example.showplaces.util.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

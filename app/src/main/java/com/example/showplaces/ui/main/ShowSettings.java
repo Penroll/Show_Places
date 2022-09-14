@@ -1,21 +1,20 @@
 package com.example.showplaces.ui.main;
 
-import static com.example.showplaces.ui.main.ShowMap.pulledPlaces;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.showplaces.MainActivity;
 import com.example.showplaces.R;
-import com.example.showplaces.util.ContactsAdapter;
+import com.google.android.gms.maps.GoogleMap;
 
 public class ShowSettings extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -41,6 +40,7 @@ public class ShowSettings extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
         pageViewModel.setIndex(index);
+
     }
 
     @SuppressLint("PotentialBehaviorOverride")
@@ -50,6 +50,32 @@ public class ShowSettings extends Fragment {
         // Initialize view
         View view=inflater.inflate(R.layout.settings_tab, container, false);
 
+        Button button = view.findViewById(R.id.mapTypeSettings);
+
+        button.setOnClickListener(view1 -> {
+            // Initializing the popup menu and giving the reference as current context
+            PopupMenu popupMenu = new PopupMenu(requireContext(), button);
+
+            // Inflating popup menu from popup_menu.xml file
+            popupMenu.getMenuInflater().inflate(R.menu.gmap_type_popup, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                // Toast message on menu item clicked
+                if(menuItem.getTitle().equals("Satellite")) {
+                    MainActivity.mapType = GoogleMap.MAP_TYPE_SATELLITE;
+                }
+                else if(menuItem.getTitle().equals("Hybrid")) {
+                    MainActivity.mapType = GoogleMap.MAP_TYPE_HYBRID;
+                }
+                else {
+                    MainActivity.mapType = GoogleMap.MAP_TYPE_NORMAL;
+                }
+                ShowMap.mMap.setMapType(MainActivity.mapType);
+                button.setText(menuItem.getTitle());
+                return true;
+            });
+            // Showing the popup menu
+            popupMenu.show();
+        });
         //Initialize Both Buttons, the "contacts" text, and the recyclerview
 
 
